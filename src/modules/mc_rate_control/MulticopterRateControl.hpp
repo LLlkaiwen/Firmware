@@ -169,6 +169,13 @@ private:
 		(ParamFloat<px4::params::MC_YAWRATE_FF>) _param_mc_yawrate_ff,
 		(ParamFloat<px4::params::MC_YAWRATE_K>) _param_mc_yawrate_k,
 
+		(ParamFloat<px4::params::MC_INERTIA_XX>) _param_mc_inertia_xx,
+		(ParamFloat<px4::params::MC_INERTIA_YY>) _param_mc_inertia_yy,
+		(ParamFloat<px4::params::MC_INERTIA_ZZ>) _param_mc_inertia_zz,
+		(ParamFloat<px4::params::MC_INERTIA_XY>) _param_mc_inertia_xy,
+		(ParamFloat<px4::params::MC_INERTIA_XZ>) _param_mc_inertia_xz,
+		(ParamFloat<px4::params::MC_INERTIA_YZ>) _param_mc_inertia_yz,
+
 		(ParamFloat<px4::params::MC_DTERM_CUTOFF>) _param_mc_dterm_cutoff,			/**< Cutoff frequency for the D-term filter */
 
 		(ParamFloat<px4::params::MPC_MAN_Y_MAX>) _param_mpc_man_y_max,			/**< scaling factor from stick to yaw rate */

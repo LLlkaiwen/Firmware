@@ -94,6 +94,14 @@ MulticopterRateControl::parameters_updated()
 	_acro_rate_max = Vector3f(radians(_param_mc_acro_r_max.get()), radians(_param_mc_acro_p_max.get()),
 				  radians(_param_mc_acro_y_max.get()));
 
+	// inertia matrix
+	const float inertia[9] = {
+		_param_mc_inertia_xx.get(), _param_mc_inertia_xy.get(), _param_mc_inertia_xz.get(),
+		_param_mc_inertia_xy.get(), _param_mc_inertia_yy.get(), _param_mc_inertia_yz.get(),
+		_param_mc_inertia_xz.get(), _param_mc_inertia_yz.get(), _param_mc_inertia_zz.get()
+	};
+	_rate_control.setInertiaMatrix(matrix::Matrix3f(inertia));
+
 	_actuators_0_circuit_breaker_enabled = circuit_breaker_enabled_by_val(_param_cbrk_rate_ctrl.get(), CBRK_RATE_CTRL_KEY);
 }
 
