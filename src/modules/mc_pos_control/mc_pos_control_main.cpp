@@ -175,7 +175,11 @@ private:
 		(ParamInt<px4::params::MPC_ALT_MODE>) _param_mpc_alt_mode,
 		(ParamFloat<px4::params::MPC_TILTMAX_LND>) _param_mpc_tiltmax_lnd, /**< maximum tilt for landing and smooth takeoff */
 		(ParamFloat<px4::params::MPC_THR_MIN>) _param_mpc_thr_min,
-		(ParamFloat<px4::params::MPC_THR_MAX>) _param_mpc_thr_max
+		(ParamFloat<px4::params::MPC_THR_MAX>) _param_mpc_thr_max,
+
+		// ESO
+		(ParamFloat<px4::params::ESO_VZ_H>) _param_eso_vz_h,
+		(ParamFloat<px4::params::ESO_VZ_B0>) _param_eso_vz_b0
 	);
 
 	control::BlockDerivative _vel_x_deriv; /**< velocity derivative in x */
@@ -386,6 +390,10 @@ MulticopterPositionControl::parameters_update(bool force)
 		if (_wv_controller != nullptr) {
 			_wv_controller->update_parameters();
 		}
+
+		//eso parameters update
+
+		_control.setEsoParameters(_param_eso_vz_h.get(),_param_eso_vz_b0.get());
 	}
 
 	return OK;
