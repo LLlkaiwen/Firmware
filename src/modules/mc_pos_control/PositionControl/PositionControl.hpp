@@ -44,7 +44,12 @@
 #include <uORB/topics/vehicle_constraints.h>
 #include <uORB/topics/vehicle_local_position.h>
 #include <uORB/topics/vehicle_local_position_setpoint.h>
-
+// #include <uORB/Publication.hpp>
+// #include <uORB/topics/debug_key_value.h>
+// #include <uORB/topics/debug_value.h>
+// #include <uORB/topics/vel_eso.h>
+// #include <drivers/drv_hrt.h>
+#include<dso/eso.h>
 struct PositionControlStates {
 	matrix::Vector3f position;
 	matrix::Vector3f velocity;
@@ -198,6 +203,7 @@ public:
 	 */
 	void getAttitudeSetpoint(vehicle_attitude_setpoint_s &attitude_setpoint) const;
 
+	void setEsoParameters(const float &para_h, const float &para_b0);
 private:
 	/**
 	 * Maps setpoints to internal-setpoints.
@@ -245,4 +251,11 @@ private:
 	bool _skip_controller{false}; /**< skips position/velocity controller. true for stabilized mode */
 	bool _ctrl_pos[3] = {true, true, true}; /**< True if the control-loop for position was used */
 	bool _ctrl_vel[3] = {true, true, true}; /**< True if the control-loop for velocity was used */
+
+	//dsos
+	ESO _eso_vz;
+
+	//uORB::Publication<debug_key_value_s>	_observed_vz_pub{ORB_ID(debug_key_value)};/**< vz observer publication */
+	//uORB::Publication<vel_eso_s> _observer_vel_pub{ORB_ID(vel_eso)}; /**pub vz eso for log*/
+
 };

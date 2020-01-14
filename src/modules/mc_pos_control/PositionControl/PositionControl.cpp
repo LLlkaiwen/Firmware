@@ -273,9 +273,13 @@ void PositionControl::_velocityController(const float &dt)
 	const Vector3f vel_err = _vel_sp - _vel;
 
 	// Consider thrust in D-direction.
-	float thrust_desired_D = _gain_vel_p(2) * vel_err(2) +  _gain_vel_d(2) * _vel_dot(2) + _thr_int(
-					 2) - _hover_thrust;
-
+	float thrust_desired_D = _gain_vel_p(2) * vel_err(2) +  _gain_vel_d(2) * _vel_dot(2) + _thr_int(2) ;
+	{
+		_eso_vz.setH(dt);
+		thrust_desired_D -=  _eso_vz.leso(_vel(2));//扰动补偿
+		_eso_vz.updateLastU(thrust_desired_D);
+	}
+	thrust_desired_D  -= _hover_thrust;
 	// The Thrust limits are negated and swapped due to NED-frame.
 	float uMax = -_lim_thr_min;
 	float uMin = -_lim_thr_max;
@@ -337,6 +341,24 @@ void PositionControl::_velocityController(const float &dt)
 		_thr_int(0) += _gain_vel_i(0) * vel_err_lim(0) * dt;
 		_thr_int(1) += _gain_vel_i(1) * vel_err_lim(1) * dt;
 	}
+	// {
+	// 	//发布vz观测值 to QGC
+	// 	 const hrt_abstime time_stamp_now = hrt_absolute_time();
+	// 	debug_key_value_s observed_vz {};
+	// 	observed_vz.timestamp = time_stamp_now;
+	// 	strncpy(observed_vz.key, "vzeso.vz", 10);
+	// 	float vz_z1, vz_z2;
+	// 	_eso_vz.getState(vz_z1,vz_z2);
+	// 	observed_vz.value = vz_z1;
+	// 	_observed_vz_pub.publish(observed_vz);
+
+	// 	//发布vel eso to log
+	// 	vel_eso_s observer_vel{};
+	// 	observer_vel.timestamp = time_stamp_now;
+	// 	observer_vel.vz_z1 = vz_z1;
+	// 	observer_vel.vz_z2 = vz_z2;
+	// 	_observer_vel_pub.publish(observer_vel);
+	// }
 }
 
 void PositionControl::updateConstraints(const vehicle_constraints_s &constraints)
@@ -382,4 +404,11 @@ void PositionControl::getAttitudeSetpoint(vehicle_attitude_setpoint_s &attitude_
 {
 	ControlMath::thrustToAttitude(_thr_sp, _yaw_sp, attitude_setpoint);
 	attitude_setpoint.yaw_sp_move_rate = _yawspeed_sp;
+}
+
+void PositionControl::setEsoParameters(const float &para_h, const float &para_b0)
+{
+	_eso_vz.setH(para_h);
+	_eso_vz.setB0(para_b0);
+	PX4_INFO("set eso param h: %f, b0: %f", (double)para_h,(double)para_b0);
 }
