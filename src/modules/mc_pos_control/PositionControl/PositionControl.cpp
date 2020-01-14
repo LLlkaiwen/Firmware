@@ -341,24 +341,24 @@ void PositionControl::_velocityController(const float &dt)
 		_thr_int(0) += _gain_vel_i(0) * vel_err_lim(0) * dt;
 		_thr_int(1) += _gain_vel_i(1) * vel_err_lim(1) * dt;
 	}
-	// {
-	// 	//发布vz观测值 to QGC
-	// 	 const hrt_abstime time_stamp_now = hrt_absolute_time();
-	// 	debug_key_value_s observed_vz {};
-	// 	observed_vz.timestamp = time_stamp_now;
-	// 	strncpy(observed_vz.key, "vzeso.vz", 10);
-	// 	float vz_z1, vz_z2;
-	// 	_eso_vz.getState(vz_z1,vz_z2);
-	// 	observed_vz.value = vz_z1;
-	// 	_observed_vz_pub.publish(observed_vz);
+	{
+		//发布vz观测值 to QGC
+		 const hrt_abstime time_stamp_now = hrt_absolute_time();
+		debug_key_value_s observed_vz {};
+		observed_vz.timestamp = time_stamp_now;
+		strncpy(observed_vz.key, "vzeso.vz", 10);
+		float vz_z1, vz_z2;
+		_eso_vz.getState(vz_z1,vz_z2);
+		observed_vz.value = vz_z1;
+		_observed_vz_pub.publish(observed_vz);
 
-	// 	//发布vel eso to log
-	// 	vel_eso_s observer_vel{};
-	// 	observer_vel.timestamp = time_stamp_now;
-	// 	observer_vel.vz_z1 = vz_z1;
-	// 	observer_vel.vz_z2 = vz_z2;
-	// 	_observer_vel_pub.publish(observer_vel);
-	// }
+		//发布vel eso to log
+		vel_eso_s observer_vel{};
+		observer_vel.timestamp = time_stamp_now;
+		observer_vel.vz_z1 = vz_z1;
+		observer_vel.vz_z2 = vz_z2;
+		_observer_vel_pub.publish(observer_vel);
+	}
 }
 
 void PositionControl::updateConstraints(const vehicle_constraints_s &constraints)

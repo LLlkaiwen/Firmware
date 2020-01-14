@@ -557,6 +557,8 @@ void Logger::add_default_topics()
 	add_topic_multi("vehicle_gps_position");
 	add_topic_multi("wind_estimate", 200);
 
+	add_topic("vel_eso", 100);
+
 #ifdef CONFIG_ARCH_BOARD_PX4_SITL
 
 	add_topic("actuator_controls_virtual_fw");

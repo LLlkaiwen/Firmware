@@ -44,11 +44,11 @@
 #include <uORB/topics/vehicle_constraints.h>
 #include <uORB/topics/vehicle_local_position.h>
 #include <uORB/topics/vehicle_local_position_setpoint.h>
-// #include <uORB/Publication.hpp>
-// #include <uORB/topics/debug_key_value.h>
-// #include <uORB/topics/debug_value.h>
-// #include <uORB/topics/vel_eso.h>
-// #include <drivers/drv_hrt.h>
+#include <uORB/Publication.hpp>
+#include <uORB/topics/debug_key_value.h>
+#include <uORB/topics/debug_value.h>
+#include <uORB/topics/vel_eso.h>
+#include <drivers/drv_hrt.h>
 #include<dso/eso.h>
 struct PositionControlStates {
 	matrix::Vector3f position;
@@ -255,7 +255,7 @@ private:
 	//dsos
 	ESO _eso_vz;
 
-	//uORB::Publication<debug_key_value_s>	_observed_vz_pub{ORB_ID(debug_key_value)};/**< vz observer publication */
-	//uORB::Publication<vel_eso_s> _observer_vel_pub{ORB_ID(vel_eso)}; /**pub vz eso for log*/
+	uORB::Publication<debug_key_value_s>	_observed_vz_pub{ORB_ID(debug_key_value)};/**< vz observer publication */
+	uORB::Publication<vel_eso_s> _observer_vel_pub{ORB_ID(vel_eso)}; /**pub vz eso for log*/
 
 };
