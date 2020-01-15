@@ -313,6 +313,16 @@ MulticopterRateControl::Run()
 			rate_estimated.y = rate_eso_z1(1);
 			rate_estimated.z = rate_eso_z1(2);
 			_rate_estimated_pub.publish(rate_estimated);
+			//发布eso数据到日志
+			rate_eso_s rate_eso_state;
+			rate_eso_state.timestamp = hrt_absolute_time();
+			rate_eso_state.rate_x_z1 = rate_eso_z1(0);
+			rate_eso_state.rate_y_z1 = rate_eso_z1(1);
+			rate_eso_state.rate_z_z1 = rate_eso_z1(2);
+			rate_eso_state.rate_x_z2 = rate_eso_z2(0);
+			rate_eso_state.rate_y_z2 = rate_eso_z2(1);
+			rate_eso_state.rate_z_z2 = rate_eso_z2(2);
+			_rate_eso_pub.publish(rate_eso_state);
 
 			// publish actuator controls
 			actuator_controls_s actuators{};

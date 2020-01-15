@@ -558,6 +558,7 @@ void Logger::add_default_topics()
 	add_topic_multi("wind_estimate", 200);
 
 	add_topic("vel_eso", 100);
+	add_topic("rate_eso", 20);
 
 #ifdef CONFIG_ARCH_BOARD_PX4_SITL
 

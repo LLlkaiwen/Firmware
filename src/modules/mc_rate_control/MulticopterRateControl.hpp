@@ -62,6 +62,7 @@
 #include <uORB/topics/vehicle_status.h>
 
 #include <uORB/topics/debug_vect.h>
+#include <uORB/topics/rate_eso.h>
 #include <string.h>
 
 class MulticopterRateControl : public ModuleBase<MulticopterRateControl>, public ModuleParams, public px4::WorkItem
@@ -121,6 +122,7 @@ private:
 	uORB::Publication<vehicle_rates_setpoint_s>	_v_rates_sp_pub{ORB_ID(vehicle_rates_setpoint)};			/**< rate setpoint publication */
 
 	uORB::Publication<debug_vect_s>		_rate_estimated_pub{ORB_ID(debug_vect)};  /**发布eso观测的rate到QGC**/
+	uORB::Publication<rate_eso_s>		_rate_eso_pub{ORB_ID(rate_eso)};
 
 	orb_advert_t	_actuators_0_pub{nullptr};		/**< attitude actuator controls publication */
 	orb_id_t _actuators_id{nullptr};	/**< pointer to correct actuator controls0 uORB metadata structure */
