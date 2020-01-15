@@ -48,7 +48,20 @@ float ESO::leso(const float &cur)
 
 void ESO::updateLastU(const float &u)
 {
-	_state_last_u = u;
+	if(u > 1.0f)
+	{
+		_state_last_u = 1.0f;
+	}
+	else if (u < -1.0f)
+	{
+		_state_last_u = -1.0f;
+	}
+	else
+	{
+		_state_last_u = u;
+	}
+
+
 }
 
 void ESO::getState(float &z1, float &z2)
