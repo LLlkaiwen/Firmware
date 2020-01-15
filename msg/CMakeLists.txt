@@ -150,6 +150,7 @@ set(msg_files
 	wheel_encoders.msg
 	wind_estimate.msg
 	vel_eso.msg
+	rate_eso.msg
 	)
 
 if(NOT EXTERNAL_MODULES_LOCATION STREQUAL "")
