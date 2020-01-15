@@ -185,7 +185,16 @@ private:
 
 		(ParamBool<px4::params::MC_BAT_SCALE_EN>) _param_mc_bat_scale_en,
 
-		(ParamInt<px4::params::CBRK_RATE_CTRL>) _param_cbrk_rate_ctrl
+		(ParamInt<px4::params::CBRK_RATE_CTRL>) _param_cbrk_rate_ctrl,
+
+		//eso param
+
+		(ParamFloat<px4::params::ESO_RATE_X_H>) _param_eso_rate_x_h,
+		(ParamFloat<px4::params::ESO_RATE_X_B>) _param_eso_rate_x_b0,
+		(ParamFloat<px4::params::ESO_RATE_Y_H>) _param_eso_rate_y_h,
+		(ParamFloat<px4::params::ESO_RATE_Y_B>) _param_eso_rate_y_b0,
+		(ParamFloat<px4::params::ESO_RATE_Z_H>) _param_eso_rate_z_h,
+		(ParamFloat<px4::params::ESO_RATE_Z_B>) _param_eso_rate_z_b0
 	)
 
 	matrix::Vector3f _acro_rate_max;	/**< max attitude rates in acro mode */

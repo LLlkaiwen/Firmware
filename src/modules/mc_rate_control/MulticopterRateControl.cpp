@@ -95,6 +95,10 @@ MulticopterRateControl::parameters_updated()
 				  radians(_param_mc_acro_y_max.get()));
 
 	_actuators_0_circuit_breaker_enabled = circuit_breaker_enabled_by_val(_param_cbrk_rate_ctrl.get(), CBRK_RATE_CTRL_KEY);
+	//update eso_rate parameters
+	//PX4_INFO("update  rate eso param");
+	_rate_control.setEsoRateParam(Vector3f(_param_eso_rate_x_h.get(), _param_eso_rate_y_h.get(), _param_eso_rate_z_h.get())
+									, Vector3f(_param_eso_rate_x_b0.get(), _param_eso_rate_y_b0.get(), _param_eso_rate_z_b0.get()));
 }
 
 void
