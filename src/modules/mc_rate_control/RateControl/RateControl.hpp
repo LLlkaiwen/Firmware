@@ -110,6 +110,8 @@ public:
 
 	void setEsoRateParam(const matrix::Vector3f & para_h,const matrix::Vector3f & para_b0);
 
+	void getRateEsoState(matrix::Vector3f &rate_eso_z1,matrix:: Vector3f &rate_eso_z2);
+
 private:
 	void updateIntegral(matrix::Vector3f &rate_error, const float dt);
 

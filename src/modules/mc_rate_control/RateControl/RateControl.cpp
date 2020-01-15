@@ -145,7 +145,7 @@ void RateControl::getRateControlStatus(rate_ctrl_status_s &rate_ctrl_status)
 	rate_ctrl_status.yawspeed_integ = _rate_int(2);
 }
 
-void RateControl::setEsoRateParam(const matrix::Vector3f & para_h,const matrix::Vector3f & para_b0)
+void RateControl::setEsoRateParam(const Vector3f & para_h,const Vector3f & para_b0)
 {
 	_eso_rollspeed.setH(para_h(0));
 	_eso_pitchspeed.setH(para_h(1));
@@ -155,4 +155,11 @@ void RateControl::setEsoRateParam(const matrix::Vector3f & para_h,const matrix::
 	_eso_pitchspeed.setB0(para_b0(1));
 	_eso_yawspeed.setB0(para_b0(2));
 	PX4_INFO("set rate eso b0: %f, %f, %f", (double)para_b0(0), (double)para_b0(1), (double)para_b0(2));
+}
+
+void RateControl::getRateEsoState(Vector3f &rate_eso_z1, Vector3f &rate_eso_z2)
+{
+	_eso_rollspeed.getState(rate_eso_z1(0), rate_eso_z2(0));
+	_eso_pitchspeed.getState(rate_eso_z1(1), rate_eso_z2(1));
+	_eso_yawspeed.getState(rate_eso_z1(2), rate_eso_z2(2));
 }

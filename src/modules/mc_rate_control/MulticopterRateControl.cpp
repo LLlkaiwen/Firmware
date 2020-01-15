@@ -303,6 +303,17 @@ MulticopterRateControl::Run()
 			rate_ctrl_status.timestamp = hrt_absolute_time();
 			_controller_status_pub.publish(rate_ctrl_status);
 
+			//发布eso观测的rate到QGC
+			Vector3f rate_eso_z1, rate_eso_z2;
+			_rate_control.getRateEsoState(rate_eso_z1, rate_eso_z2);
+			debug_vect_s rate_estimated{};
+			rate_estimated.timestamp =  hrt_absolute_time();
+			strncpy(rate_estimated.name, "rate_eso", 10);
+			rate_estimated.x = rate_eso_z1(0);
+			rate_estimated.y = rate_eso_z1(1);
+			rate_estimated.z = rate_eso_z1(2);
+			_rate_estimated_pub.publish(rate_estimated);
+
 			// publish actuator controls
 			actuator_controls_s actuators{};
 			actuators.control[actuator_controls_s::INDEX_ROLL] = PX4_ISFINITE(att_control(0)) ? att_control(0) : 0.0f;
