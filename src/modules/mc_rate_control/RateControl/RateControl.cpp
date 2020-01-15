@@ -78,9 +78,22 @@ Vector3f RateControl::update(const Vector3f &rate, const Vector3f &rate_sp, cons
 	if (dt > FLT_EPSILON) {
 		rate_d = (rate_filtered - _rate_prev_filtered) / dt;
 	}
-
+	_eso_rollspeed.setH(dt);
+	_eso_pitchspeed.setH(dt);
+	_eso_yawspeed.setH(dt);
+	Vector3f disturbance = Vector3f(0.5f*_eso_rollspeed.leso(rate(0))
+									, 0.5f*_eso_pitchspeed.leso(rate(1))
+									, 0.5f*_eso_yawspeed.leso(rate(2)));
+	if(landed)//未起飞/着陆时不补偿扰动
+	{
+		disturbance = Vector3f(0.0f,0.0f,0.0f);
+	}
 	// PID control with feed forward
-	const Vector3f torque = _gain_p.emult(rate_error) + _rate_int - _gain_d.emult(rate_d) + _gain_ff.emult(rate_sp);
+	const Vector3f torque = _gain_p.emult(rate_error) + _rate_int - _gain_d.emult(rate_d) + _gain_ff.emult(rate_sp) - disturbance;
+
+	_eso_rollspeed.updateLastU(torque(0));
+	_eso_pitchspeed.updateLastU(torque(1));
+	_eso_yawspeed.updateLastU(torque(2));
 
 	_rate_prev = rate;
 	_rate_prev_filtered = rate_filtered;
@@ -130,4 +143,16 @@ void RateControl::getRateControlStatus(rate_ctrl_status_s &rate_ctrl_status)
 	rate_ctrl_status.rollspeed_integ = _rate_int(0);
 	rate_ctrl_status.pitchspeed_integ = _rate_int(1);
 	rate_ctrl_status.yawspeed_integ = _rate_int(2);
+}
+
+void RateControl::setEsoRateParam(const matrix::Vector3f & para_h,const matrix::Vector3f & para_b0)
+{
+	_eso_rollspeed.setH(para_h(0));
+	_eso_pitchspeed.setH(para_h(1));
+	_eso_yawspeed.setH(para_h(2));
+	PX4_INFO("set rate eso h: %f, %f, %f", (double)para_h(0), (double)para_h(1), (double)para_h(2));
+	_eso_rollspeed.setB0(para_b0(0));
+	_eso_pitchspeed.setB0(para_b0(1));
+	_eso_yawspeed.setB0(para_b0(2));
+	PX4_INFO("set rate eso b0: %f, %f, %f", (double)para_b0(0), (double)para_b0(1), (double)para_b0(2));
 }

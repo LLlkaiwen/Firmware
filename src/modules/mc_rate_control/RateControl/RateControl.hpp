@@ -44,7 +44,7 @@
 
 #include <lib/mixer/mixer.h>
 #include <uORB/topics/rate_ctrl_status.h>
-
+#include <dso/eso.h>
 class RateControl
 {
 public:
@@ -108,6 +108,8 @@ public:
 	 */
 	void getRateControlStatus(rate_ctrl_status_s &rate_ctrl_status);
 
+	void setEsoRateParam(const matrix::Vector3f & para_h,const matrix::Vector3f & para_b0);
+
 private:
 	void updateIntegral(matrix::Vector3f &rate_error, const float dt);
 
@@ -125,4 +127,7 @@ private:
 	math::LowPassFilter2pVector3f _lp_filters_d{0.f, 0.f}; ///< low-pass filters for D-term (roll, pitch & yaw)
 	bool _mixer_saturation_positive[3] {};
 	bool _mixer_saturation_negative[3] {};
+
+	//dsos
+	ESO _eso_rollspeed, _eso_pitchspeed, _eso_yawspeed;
 };
